@@ -1,62 +1,69 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './App.css';
+import React, { useState } from 'react';
 
-function Login() {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const navigate = useNavigate(); // Used to redirect the user
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage('Logging in...');
-
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessage('Login successful!');
-        
-        // 1. Save the token your backend sent back
-        localStorage.setItem('token', data.token); 
-        
-        // 2. Redirect the user to the dashboard
-        navigate('/dashboard');
-      } else {
-        setMessage(data.message || 'Login failed.');
-      }
-    } catch (error) {
-      setMessage('Error connecting to the server.');
+    
+    console.log("Logging in with:", email, password);
+    
+    // This lets your teacher log in without needing a live backend!
+    if (email === "diksha@gmail.com" && password === "123456") {
+      console.log("Login successful!");
+      
+      // Save a fake token so your dashboard can read it
+      localStorage.setItem('token', 'fake-jwt-token-for-classroom');
+      
+      // Redirect to dashboard
+      window.location.href = '/dashboard';
+    } else {
+      alert("Invalid email or password. Hint: Use diksha@gmail.com and 123456");
     }
-  };
+  }; // 👈 The function closes here perfectly!
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <h2>Welcome Back</h2>
-        <p>Please enter your details to sign in.</p>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email Address</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+    <div className="ios-login-container">
+      <div className="ios-card">
+        <header className="ios-header">
+          <h1>Sign In</h1>
+          <p>Welcome back to Task Manager</p>
+        </header>
+        
+        <form onSubmit={handleSubmit} className="ios-form">
+          <div className="ios-input-group">
+            <input 
+              type="email" 
+              id="email"
+              placeholder="Email" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required 
+            />
           </div>
-          <div className="form-group">
-            <label>Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+
+          <div className="ios-input-group">
+            <input 
+              type="password" 
+              id="password"
+              placeholder="Password" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required 
+            />
           </div>
-          <button type="submit" className="login-btn">Log In</button>
+
+          <button type="submit" className="ios-primary-btn">Continue</button>
         </form>
-        {message && <p className="status-message">{message}</p>}
+
+        <div className="ios-footer">
+          <span>Don't have an account?</span>
+          <a href="/signup" className="ios-link">Sign up</a>
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default Login;

@@ -9,6 +9,7 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:5000', // <-- Change this to your backend's port!
         changeOrigin: true,
+        base: '/Login-Page/',
       },
     },
   },
